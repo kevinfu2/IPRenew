@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 
 namespace IPRenew
@@ -22,6 +23,8 @@ namespace IPRenew
             var id = SecurityEncode(lines[3], "xb2g56hc9TefbwK", lines[4]);
 
             content = Fetcher.PostPage("http://172.16.2.1/?code=0&asyn=0&id="+HttpUtility.UrlEncode(id), "wan -linkDown");
+            //Thread.Sleep(3000);
+            content = Fetcher.PostPage("http://172.16.2.1/?code=0&asyn=0&id=" + HttpUtility.UrlEncode(id), "wan -linkUp");
 
         }
         public string SecurityEncode(string a, string b, string c)

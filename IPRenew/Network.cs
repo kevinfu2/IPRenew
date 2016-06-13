@@ -10,31 +10,44 @@ using System.Threading;
 
 namespace IPRenew
 {
-    class Program
+    public class Network
     {
-        static void Main(string[] args)
+        public static string ChangeIP(string oldIp)
         {
-            Program p = new Program();
+            Network p = new Network();
+            
             if (p.IsOnline())
-                Console.WriteLine(p.GetPublicIP());
+            {
+                oldIp = p.GetPublicIP();
+                Console.WriteLine(oldIp);
+            }
             else
                 Console.WriteLine("Offline");
             new Mercury().RenewIP();
-            while (!p.IsOnline())
+            string newIP = p.GetPublicIP();
+            while (newIP == oldIp)
             {
-                Console.WriteLine("OFFLINE");
-                Thread.Sleep(1000);
+                new Mercury().RenewIP();
             }
             Console.WriteLine(p.GetPublicIP());
+            return newIP;
         }
         public string GetPublicIP()
         {
             String direction = "";
-            WebRequest request = WebRequest.Create("http://bot.whatismyipaddress.com/");
-            using (WebResponse response = request.GetResponse())
-            using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+            try
             {
-                direction = stream.ReadToEnd();
+                
+                WebRequest request = WebRequest.Create("http://bot.whatismyipaddress.com/");
+                using (WebResponse response = request.GetResponse())
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    direction = stream.ReadToEnd();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
             return direction;
         }
