@@ -23,9 +23,19 @@ namespace IPRenew
             var id = SecurityEncode(lines[3], "xb2g56hc9TefbwK", lines[4]);
 
             content = Fetcher.PostPage("http://172.16.2.1/?code=0&asyn=0&id="+HttpUtility.UrlEncode(id), "wan -linkDown");
-            //Thread.Sleep(3000);
+            Thread.Sleep(3000);
             content = Fetcher.PostPage("http://172.16.2.1/?code=0&asyn=0&id=" + HttpUtility.UrlEncode(id), "wan -linkUp");
 
+        }
+        public void Restart()
+        {
+            string content = Fetcher.PostPage("http://172.16.2.1/?code=2&asyn=1", "");
+
+            var lines = content.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            var id = SecurityEncode(lines[3], "xb2g56hc9TefbwK", lines[4]);
+
+            content = Fetcher.PostPage("http://172.16.2.1/?code=6&asyn=1&id=" + HttpUtility.UrlEncode(id), "wan -linkDown");
+            Thread.Sleep(1000 * 60);
         }
         public string SecurityEncode(string a, string b, string c)
         {

@@ -15,21 +15,15 @@ namespace IPRenew
         public static string ChangeIP(string oldIp)
         {
             Network p = new Network();
-            
-            if (p.IsOnline())
-            {
-                oldIp = p.GetPublicIP();
-                Console.WriteLine(oldIp);
-            }
-            else
-                Console.WriteLine("Offline");
+            Console.WriteLine(oldIp);
             new Mercury().RenewIP();
             string newIP = p.GetPublicIP();
             while (newIP == oldIp)
             {
                 new Mercury().RenewIP();
+                newIP = p.GetPublicIP();
             }
-            Console.WriteLine(p.GetPublicIP());
+            Console.WriteLine(newIP);
             return newIP;
         }
         public string GetPublicIP()
